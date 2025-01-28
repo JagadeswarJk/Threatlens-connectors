@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""OpenCTI AlienVault utilities module."""
+"""threatlens AlienVault utilities module."""
 
 from datetime import datetime
 from typing import Any, Callable, Dict, List, Mapping, NamedTuple, Optional, Union
@@ -8,10 +8,10 @@ import stix2
 from alienvault.utils.constants import (
     TLP_MARKING_DEFINITION_MAPPING,
     X_MITRE_ID,
-    X_OPENCTI_LOCATION_TYPE,
-    X_OPENCTI_MAIN_OBSERVABLE_TYPE,
-    X_OPENCTI_REPORT_STATUS,
-    X_OPENCTI_SCORE,
+    X_THREATLENS_LOCATION_TYPE,
+    X_THREATLENS_MAIN_OBSERVABLE_TYPE,
+    X_THREATLENS_REPORT_STATUS,
+    X_THREATLENS_SCORE,
 )
 from alienvault.utils.indicators import (
     IndicatorPattern,
@@ -183,7 +183,7 @@ def create_external_reference(
 def create_indicator(
     pattern: str,
     pattern_type: str,
-    x_opencti_score: int,
+    x_threatlens_score: int,
     created_by: Optional[stix2.Identity] = None,
     name: Optional[str] = None,
     description: Optional[str] = None,
@@ -191,16 +191,16 @@ def create_indicator(
     labels: Optional[List[str]] = None,
     confidence: Optional[int] = None,
     object_markings: Optional[List[stix2.MarkingDefinition]] = None,
-    x_opencti_main_observable_type: Optional[str] = None,
+    x_threatlens_main_observable_type: Optional[str] = None,
 ) -> stix2.Indicator:
     """Create an indicator."""
     custom_properties: Dict[str, Any] = {}
 
-    if x_opencti_main_observable_type is not None:
-        custom_properties[X_OPENCTI_MAIN_OBSERVABLE_TYPE] = (
-            x_opencti_main_observable_type
+    if x_threatlens_main_observable_type is not None:
+        custom_properties[X_threatlens_MAIN_OBSERVABLE_TYPE] = (
+            x_threatlens_main_observable_type
         )
-    custom_properties[X_OPENCTI_SCORE] = x_opencti_score
+    custom_properties[X_threatlens_SCORE] = x_threatlens_score
 
     return stix2.Indicator(
         id=Indicator.generate_id(pattern),
@@ -271,7 +271,7 @@ def create_country(name: str, created_by: stix2.Identity) -> stix2.Location:
         created_by_ref=created_by,
         name=name,
         country="ZZ",  # TODO: Country code is required by STIX2!
-        custom_properties={X_OPENCTI_LOCATION_TYPE: LocationTypes.COUNTRY.value},
+        custom_properties={X_threatlens_LOCATION_TYPE: LocationTypes.COUNTRY.value},
     )
 
 
@@ -511,7 +511,7 @@ def create_report(
     confidence: Optional[int] = None,
     external_references: Optional[List[stix2.ExternalReference]] = None,
     object_markings: Optional[List[stix2.MarkingDefinition]] = None,
-    x_opencti_report_status: Optional[int] = None,
+    x_threatlens_report_status: Optional[int] = None,
 ) -> stix2.Report:
     """Create a report."""
     return stix2.Report(
@@ -528,6 +528,6 @@ def create_report(
         confidence=confidence,
         external_references=external_references,
         object_marking_refs=object_markings,
-        custom_properties={X_OPENCTI_REPORT_STATUS: x_opencti_report_status},
+        custom_properties={X_threatlens_REPORT_STATUS: x_threatlens_report_status},
         allow_custom=True,
     )
