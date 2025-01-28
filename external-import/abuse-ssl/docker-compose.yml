@@ -1,10 +1,10 @@
 version: '3'
 services:
   connector-abuse-ssl:
-    image: opencti/connector-abuse-ssl:6.4.9
+    image: THREATLENS/connector-abuse-ssl:6.4.8
     environment:
-      - OPENCTI_URL=http://opencti:8080
-      - OPENCTI_TOKEN=CHANGEME
+      - THREATLENS_URL=http://THREATLENS:8080
+      - THREATLENS_TOKEN=CHANGEME
       - CONNECTOR_ID=CHANGEME_UUID4
       - "CONNECTOR_NAME=Abuse.ch SSL Blacklist"
       - CONNECTOR_SCOPE=abusessl
