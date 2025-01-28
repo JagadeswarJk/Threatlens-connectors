@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""OpenCTI AlienVault connector main module."""
+"""Threatlens AlienVault connector main module."""
 
 from alienvault import AlienVault
 
