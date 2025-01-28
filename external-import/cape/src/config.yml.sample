@@ -1,5 +1,5 @@
-opencti:
-  url: 'http://opencti:8080'
+threatlens:
+  url: 'http://threatlens:8080'
   token: 'CHANGEME'
 
 connector:
