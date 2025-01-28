@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""OpenCTI AlienVault indicator utilities module."""
+"""threatlens AlienVault indicator utilities module."""
 
 from typing import List, NamedTuple
 
