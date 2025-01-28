@@ -11,7 +11,7 @@ import stix2
 import yaml
 from pycti import (
     Indicator,
-    OpenCTIConnectorHelper,
+    ThreatlensConnectorHelper,
     StixCoreRelationship,
     get_config_variable,
 )
@@ -26,7 +26,7 @@ class abuseipdbipblacklistimport:
             if os.path.isfile(config_file_path)
             else {}
         )
-        self.helper = OpenCTIConnectorHelper(config)
+        self.helper = ThreatlensConnectorHelper(config)
         self.api_url = get_config_variable(
             "ABUSEIPDB_URL", ["abuseipdbipblacklistimport", "api_url"], config
         )
@@ -114,7 +114,7 @@ class abuseipdbipblacklistimport:
                         image = response.read()
                         data_json = json.loads(image)
 
-                        # preparing the bundle to be sent to OpenCTI worker
+                        # preparing the bundle to be sent to Threatlens worker
                         external_reference = stix2.ExternalReference(
                             source_name="AbuseIPDB database",
                             url="https://www.abuseipdb.com/",
@@ -146,8 +146,8 @@ class abuseipdbipblacklistimport:
                                     external_references=[external_reference],
                                     object_marking_refs=[stix2.TLP_WHITE],
                                     custom_properties={
-                                        "x_opencti_score": d["abuseConfidenceScore"],
-                                        "x_opencti_main_observable_type": "IPv4-Addr",
+                                        "x_Threatlens_score": d["abuseConfidenceScore"],
+                                        "x_Threatlens_main_observable_type": "IPv4-Addr",
                                     },
                                 )
                                 stix_observable = stix2.IPv4Address(
@@ -156,14 +156,14 @@ class abuseipdbipblacklistimport:
                                     value=d["ipAddress"],
                                     object_marking_refs=[stix2.TLP_WHITE],
                                     custom_properties={
-                                        "x_opencti_description": "Agressive IP known malicious on AbuseIPDB"
+                                        "x_Threatlens_description": "Agressive IP known malicious on AbuseIPDB"
                                         + " - countryCode: "
                                         + str(d["countryCode"])
                                         + " - abuseConfidenceScore: "
                                         + str(d["abuseConfidenceScore"])
                                         + " - lastReportedAt: "
                                         + str(d["lastReportedAt"]),
-                                        "x_opencti_score": d["abuseConfidenceScore"],
+                                        "x_Threatlens_score": d["abuseConfidenceScore"],
                                         "created_by_ref": self.identity["standard_id"],
                                         "external_references": [external_reference],
                                     },
@@ -187,8 +187,8 @@ class abuseipdbipblacklistimport:
                                     external_references=[external_reference],
                                     object_marking_refs=[stix2.TLP_WHITE],
                                     custom_properties={
-                                        "x_opencti_score": d["abuseConfidenceScore"],
-                                        "x_opencti_main_observable_type": "IPv6-Addr",
+                                        "x_Threatlens_score": d["abuseConfidenceScore"],
+                                        "x_Threatlens_main_observable_type": "IPv6-Addr",
                                     },
                                 )
                                 stix_observable = stix2.IPv6Address(
@@ -204,7 +204,7 @@ class abuseipdbipblacklistimport:
                                         + str(d["abuseConfidenceScore"])
                                         + " - lastReportedAt: "
                                         + str(d["lastReportedAt"]),
-                                        "x_opencti_score": d["abuseConfidenceScore"],
+                                        "x_Threatlens_score": d["abuseConfidenceScore"],
                                         "created_by_ref": self.identity["standard_id"],
                                         "external_references": [external_reference],
                                     },
