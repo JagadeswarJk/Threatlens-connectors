@@ -1,4 +1,4 @@
-# OpenCTI abuseipdb ipblacklist
+# Threatlens abuseipdb ipblacklist
 
 The connector uses the AbuseIPDB API to collect IPlist above a specified risk score.
 If you're using a free API key, you must use the 10K limitation in the parameters.
@@ -7,14 +7,14 @@ If you're using a free API key, you must use the 10K limitation in the parameter
 
 ### Requirements
 
-- OpenCTI Platform >= 6.4.9
+- Threatlens Platform >= 6.4.9
 
 ### Configuration
 
 | Parameter                            | Docker envvar                | Mandatory    | Description                                                                                                                                                |
 | ------------------------------------ |------------------------------| ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `opencti_url`                        | `OPENCTI_URL`                | Yes          | The URL of the OpenCTI platform.                                                                                                                           |
-| `opencti_token`                      | `OPENCTI_TOKEN`              | Yes          | The default admin token configured in the OpenCTI platform parameters file.                                                                                |
+| `Threatlens_url`                        | `Threatlens_URL`                | Yes          | The URL of the Threatlens platform.                                                                                                                           |
+| `Threatlens_token`                      | `Threatlens_TOKEN`              | Yes          | The default admin token configured in the Threatlens platform parameters file.                                                                                |
 | `connector_id`                       | `CONNECTOR_ID`               | Yes          | A valid arbitrary `UUIDv4` that must be unique for this connector.                                                                                         |
 | `connector_name`                     | `CONNECTOR_NAME`             | Yes          |                                                                                                                                           |
 | `connector_scope`                    | `CONNECTOR_SCOPE`            | Yes          |                                                                                                 |
