@@ -11,7 +11,7 @@ import cmarkgfm
 import yaml
 from cmarkgfm.cmark import Options as cmarkgfmOptions
 from jinja2 import Environment, FileSystemLoader
-from pycti import OpenCTIConnectorHelper, get_config_variable
+from pycti import ThreatlensConnectorHelper, get_config_variable
 from pycti.utils.constants import StixCyberObservableTypes
 from pygal_maps_world.i18n import COUNTRIES
 from pygal_maps_world.maps import World
@@ -33,7 +33,7 @@ class ExportReportPdf:
             if os.path.isfile(config_file_path)
             else {}
         )
-        self.helper = OpenCTIConnectorHelper(config)
+        self.helper = ThreatlensConnectorHelper(config)
 
         # ExportReportPdf specific config settings
         self.primary_color = get_config_variable(
@@ -360,7 +360,7 @@ class ExportReportPdf:
                 object_ids, access_filter
             )
             entities_list = (
-                self.helper.api.opencti_stix_object_or_stix_relationship.list(
+                self.helper.api.Threatlens_stix_object_or_stix_relationship.list(
                     filters=export_filter
                 )
             )
@@ -796,7 +796,7 @@ class ExportReportPdf:
                 object_ids, access_filter
             )
             entities_list = (
-                self.helper.api.opencti_stix_object_or_stix_relationship.list(
+                self.helper.api.Threatlens_stix_object_or_stix_relationship.list(
                     filters=export_filter
                 )
             )
@@ -920,9 +920,9 @@ class ExportReportPdf:
             "language": self.helper.api_impersonate.language.read,
             "vulnerability": self.helper.api_impersonate.vulnerability.read,
             "incident": self.helper.api_impersonate.incident.read,
-            "x-opencti-case-incident": self.helper.api_impersonate.case_incident.read,
+            "x-Threatlens-case-incident": self.helper.api_impersonate.case_incident.read,
             "case-incident": self.helper.api_impersonate.case_incident.read,
-            "x-opencti-case-rfi": self.helper.api_impersonate.case_rfi.read,
+            "x-Threatlens-case-rfi": self.helper.api_impersonate.case_rfi.read,
             "case-rfi": self.helper.api_impersonate.case_rfi.read,
             "city": self.helper.api_impersonate.location.read,
             "country": self.helper.api_impersonate.location.read,
