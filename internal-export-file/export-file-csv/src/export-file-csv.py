@@ -6,7 +6,7 @@ import sys
 import time
 
 import yaml
-from pycti import OpenCTIConnectorHelper, get_config_variable
+from pycti import ThreatlensConnectorHelper, get_config_variable
 
 
 class ExportFileCsv:
@@ -18,7 +18,7 @@ class ExportFileCsv:
             if os.path.isfile(config_file_path)
             else {}
         )
-        self.helper = OpenCTIConnectorHelper(config)
+        self.helper = ThreatlensConnectorHelper(config)
         self.export_file_csv_delimiter = get_config_variable(
             "EXPORT_FILE_CSV_DELIMITER",
             ["export-file-csv", "delimiter"],
@@ -199,7 +199,7 @@ class ExportFileCsv:
                     ],
                     "filters": [],
                 }
-                entities_list = self.helper.api_impersonate.opencti_stix_object_or_stix_relationship.list(
+                entities_list = self.helper.api_impersonate.Threatlens_stix_object_or_stix_relationship.list(
                     filters=export_selection_filter, getAll=True
                 )
                 # Cleanup object extra information
@@ -246,7 +246,7 @@ class ExportFileCsv:
         # = Only simple
         if export_scope == "selection":
             list_filters = "selected_ids"
-            entities_list = self.helper.api_impersonate.opencti_stix_object_or_stix_relationship.list(
+            entities_list = self.helper.api_impersonate.Threatlens_stix_object_or_stix_relationship.list(
                 filters=main_filter, getAll=True
             )
             self._export_list(data, entities_list, list_filters)
