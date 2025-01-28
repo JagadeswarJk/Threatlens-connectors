@@ -1,4 +1,4 @@
-opencti:
+threatlens:
   url: 'http://localhost:8080'
   token: 'ChangeMe'
 
