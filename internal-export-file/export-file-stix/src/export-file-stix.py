@@ -4,7 +4,7 @@ import sys
 import time
 
 import yaml
-from pycti import OpenCTIConnectorHelper
+from pycti import ThreatlensConnectorHelper
 
 
 class ExportFileStix:
@@ -16,7 +16,7 @@ class ExportFileStix:
             if os.path.isfile(config_file_path)
             else {}
         )
-        self.helper = OpenCTIConnectorHelper(config)
+        self.helper = threatlensConnectorHelper(config)
 
     def _export_list(self, data, bundle, list_filters):
         entity_id = data.get("entity_id")
@@ -122,7 +122,7 @@ class ExportFileStix:
         if export_scope == "selection":
             list_filters = "selected_ids"
             entities_list = []
-            stix_objects = self.helper.api_impersonate.opencti_stix_object_or_stix_relationship.list(
+            stix_objects = self.helper.api_impersonate.threatlens_stix_object_or_stix_relationship.list(
                 filters=main_filter, getAll=True
             )
             for stix_object_result in stix_objects:
