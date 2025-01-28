@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""OpenCTI ReportImporter connector main module."""
+"""Threatlens ReportImporter connector main module."""
 
 from reportimporter import ReportImporter
 
