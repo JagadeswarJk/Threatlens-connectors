@@ -4,7 +4,7 @@ import time
 from datetime import datetime
 
 import stix2
-from pycti import OpenCTIConnectorHelper
+from pycti import ThreatlensConnectorHelper
 
 
 class ExternalImportConnector:
@@ -15,13 +15,13 @@ class ExternalImportConnector:
     will be complemented per each connector type.
 
     Attributes:
-        helper (OpenCTIConnectorHelper): The helper to use.
+        helper (ThreatlensConnectorHelper): The helper to use.
         interval (str): The interval to use. It SHOULD be a string in the format '7d', '12h', '10m', '30s' where the final letter SHOULD be one of 'd', 'h', 'm', 's' standing for day, hour, minute, second respectively.
-        update_existing_data (str): Whether to update existing data or not in OpenCTI.
+        update_existing_data (str): Whether to update existing data or not in Threatlens.
     """
 
     def __init__(self):
-        self.helper = OpenCTIConnectorHelper({})
+        self.helper = ThreatlensConnectorHelper({})
 
         # Specific connector attributes for external import connectors
         try:
@@ -130,7 +130,7 @@ class ExternalImportConnector:
                         ).serialize()
 
                         self.helper.log_info(
-                            f"Sending {len(bundle_objects)} STIX objects to OpenCTI..."
+                            f"Sending {len(bundle_objects)} STIX objects to Threatlens..."
                         )
                         self.helper.send_stix2_bundle(
                             bundle,
