@@ -1,4 +1,4 @@
-# OpenCTI Abuse-SSL Connector
+# Threatlens Abuse-SSL Connector
 
 The connector uses the an Abuse-ssl csv file that lists botnet ips detected based on certain ssl signatures
 
@@ -8,14 +8,14 @@ An SSL certificate can be associated with one or more servers (IP address:port c
 
 ### Requirements
 
-- OpenCTI Platform >= 6.4.9
+- Threatlens Platform >= 6.4.9
 
 ### Configuration
 
 | Parameter                    | Docker envvar                | Mandatory | Description                                                                                   |
 | ---------------------------- | ---------------------------- | --------- | --------------------------------------------------------------------------------------------- |
-| `opencti_url`                | `OPENCTI_URL`                | Yes       | The URL of the OpenCTI platform.                                                              |
-| `opencti_token`              | `OPENCTI_TOKEN`              | Yes       | The default admin token configured in the OpenCTI platform parameters file.                   |
+| `Threatlens_url`                | `Threatlens_URL`                | Yes       | The URL of the Threatlens platform.                                                              |
+| `Threatlens_token`              | `Threatlens_TOKEN`              | Yes       | The default admin token configured in the Threatlens platform parameters file.                   |
 | `connector_id`               | `CONNECTOR_ID`               | Yes       | A valid arbitrary `UUIDv4` that must be unique for this connector.                            |
 | `connector_name`             | `CONNECTOR_NAME`             | Yes       |                                                                                               |
 | `connector_scope`            | `CONNECTOR_SCOPE`            | Yes       |                                                                                               |
