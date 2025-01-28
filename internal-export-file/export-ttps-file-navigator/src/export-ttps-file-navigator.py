@@ -4,7 +4,7 @@ import sys
 import time
 
 import yaml
-from pycti import OpenCTIConnectorHelper
+from pycti import ThreatlensConnectorHelper
 
 
 class ExportTTPsFileNavigator:
@@ -17,7 +17,7 @@ class ExportTTPsFileNavigator:
             if os.path.isfile(config_file_path)
             else {}
         )
-        self.helper = OpenCTIConnectorHelper(config)
+        self.helper = ThreatlensConnectorHelper(config)
 
     def _process_message(self, data):
         if "entity_type" not in data or "entity_id" not in data:
