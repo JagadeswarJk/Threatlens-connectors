@@ -1,25 +1,25 @@
-# OpenCTI Document Import Connector
+# Threatlens Document Import Connector
 
-This connector allows organizations to feed information from document to OpenCTI.
+This connector allows organizations to feed information from document to Threatlens.
 
-This connector extracts the information in the document files and then matches it against regular expressions for Entities from the OpenCTI knowledge base or new Observables.
+This connector extracts the information in the document files and then matches it against regular expressions for Entities from the Threatlens knowledge base or new Observables.
 
 ## General overview
 
-OpenCTI data is coming from *import* connectors.
+Threatlens data is coming from *import* connectors.
 
 ## Installation
 
 ### Requirements
 
-- OpenCTI Platform >= 4.5.1
+- Threatlens Platform >= 4.5.1
 
 ### Configuration
 
 | Parameter                            | Docker envvar                       | Mandatory    | Description                                                                                                                                                |
 | ------------------------------------ | ----------------------------------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `opencti_url`                        | `OPENCTI_URL`                       | Yes          | The URL of the OpenCTI platform.                                                                                                                           |
-| `opencti_token`                      | `OPENCTI_TOKEN`                     | Yes          | The default admin token configured in the OpenCTI platform parameters file.                                                                                |
+| `Threatlens_url`                        | `Threatlens_URL`                       | Yes          | The URL of the Threatlens platform.                                                                                                                           |
+| `Threatlens_token`                      | `Threatlens_TOKEN`                     | Yes          | The default admin token configured in the Threatlens platform parameters file.                                                                                |
 | `connector_id`                       | `CONNECTOR_ID`                      | Yes          | A valid arbitrary `UUIDv4` that must be unique for this connector.                                                                                         |
 | `connector_name`                     | `CONNECTOR_NAME`                    | Yes          | Option `ImportReport`                                                                                                                          |
 | `connector_only_contextual`          | `CONNCETOR_ONLY_CONTEXTUAL`         | Yes          | `true` Only extract data related to an entity (a report, a threat actor, etc.)                                                                             |
@@ -71,15 +71,15 @@ DEBUG:root:Text: 'executed with arp.exe and cmd.exe to run it' -> extracts {'cmd
 | Extractable Entity | Based on | Example | Stix entity type and field | Note |
 |-------------|-------------------------|------------------|------|----|
 | Attack Pattern | MITRE ATT&CK Technique | T1234.001| AttackPattern.x_mitre_id |  |
-| Country      | Based on registered entries in OpenCTI |France |Location.name, Location.aliases|  |
-| Campaign |Based on registered entries in OpenCTI | Solarwinds Campaign | Campaign.name, Campaign.aliases|  |
+| Country      | Based on registered entries in Threatlens |France |Location.name, Location.aliases|  |
+| Campaign |Based on registered entries in Threatlens | Solarwinds Campaign | Campaign.name, Campaign.aliases|  |
 | Course of Action | :x: | |
-| Incident |Based on registered entries in OpenCTI | | Incident.name, Incident.aliases|  |
-| Intrusion Set | Based on registered entries in OpenCTI | APT29| IntrusionSet.name, IntrusionSet.aliases| |
-| Malware          | Based on registered entries in OpenCTI |BadPatch| Malware.name, Malware.aliases|  |
-| Organization      | Based on registered entries in OpenCTI |Microsoft |Identity.name, Identity.aliases|  |
-| Threat Actor | Based on registered entries in OpenCTI |  GRU| IntrusionSet.name, IntrusionSet.aliases| |
-| Tool          | Based on registered entries in OpenCTI |cmd.exe |Tool.name, Tool.aliases| The Linux tool `at` is excluded due to too many false positives |
+| Incident |Based on registered entries in Threatlens | | Incident.name, Incident.aliases|  |
+| Intrusion Set | Based on registered entries in Threatlens | APT29| IntrusionSet.name, IntrusionSet.aliases| |
+| Malware          | Based on registered entries in Threatlens |BadPatch| Malware.name, Malware.aliases|  |
+| Organization      | Based on registered entries in Threatlens |Microsoft |Identity.name, Identity.aliases|  |
+| Threat Actor | Based on registered entries in Threatlens |  GRU| IntrusionSet.name, IntrusionSet.aliases| |
+| Tool          | Based on registered entries in Threatlens |cmd.exe |Tool.name, Tool.aliases| The Linux tool `at` is excluded due to too many false positives |
 | Vulnerability | CVE Numbers             | CVE-2020-0688 | Vulnerability.name |  |
 
 **Extractable Observables/Stix Cyber Observables**
@@ -140,7 +140,7 @@ filter_config =
 
 **entity_config.ini**
 ```
-# Stix class is the name of the corresponding OpenCTI API class which will be executed
+# Stix class is the name of the corresponding Threatlens API class which will be executed
 # The requests are called `self.api.<stix_class>.list()
 stix_class = location
 
@@ -159,7 +159,7 @@ omit_match_in =
     Domain-Name.value
 ```
 
-[1] https://github.com/OpenCTI-Platform/client-python/tree/master/pycti/entities
+[1] https://github.com/Threatlens-Platform/client-python/tree/master/pycti/entities
 
 ### Know Issues:
 
