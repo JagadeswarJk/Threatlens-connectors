@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-"""OpenCTI AlienVault observable utilities module."""
+"""threatlens AlienVault observable utilities module."""
 
 from typing import Any, List, Mapping, NamedTuple, Optional
 
 from alienvault.utils.constants import (
-    X_OPENCTI_CREATED_BY_REF,
-    X_OPENCTI_LABELS,
-    X_OPENCTI_SCORE,
+    X_THREATLENS_CREATED_BY_REF,
+    X_THREATLENS_LABELS,
+    X_THREATLENS_SCORE,
 )
 from pycti import CustomObservableCryptocurrencyWallet, CustomObservableHostname
 from stix2 import DomainName  # type: ignore
@@ -23,16 +23,16 @@ from stix2 import (
 
 
 def _get_default_custom_properties(
-    x_opencti_score: int,
+    x_threatlens_score: int,
     created_by: Optional[Identity] = None,
     labels: Optional[List[str]] = None,
 ) -> Mapping[str, Any]:
-    # XXX: Causes an unexpected property (x_opencti_score) error
+    # XXX: Causes an unexpected property (x_threatlens_score) error
     # when creating a Bundle without allow_custom=True flag.
-    custom_properties = {X_OPENCTI_LABELS: labels, X_OPENCTI_SCORE: x_opencti_score}
+    custom_properties = {X_threatlens_LABELS: labels, X_threatlens_SCORE: x_threatlens_score}
 
     if created_by is not None:
-        custom_properties[X_OPENCTI_CREATED_BY_REF] = created_by["id"]
+        custom_properties[X_threatlens_CREATED_BY_REF] = created_by["id"]
 
     return custom_properties
 
@@ -44,14 +44,14 @@ class ObservableProperties(NamedTuple):
     created_by: Identity
     labels: List[str]
     object_markings: List[MarkingDefinition]
-    x_opencti_score: int
+    x_threatlens_score: int
 
 
 def _get_custom_properties(properties: ObservableProperties) -> Mapping[str, Any]:
     return _get_default_custom_properties(
         created_by=properties.created_by,
         labels=properties.labels,
-        x_opencti_score=properties.x_opencti_score,
+        x_threatlens_score=properties.x_threatlens_score,
     )
 
 
