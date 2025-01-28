@@ -8,7 +8,7 @@ import yaml
 from pycti import (
     Identity,
     Indicator,
-    OpenCTIConnectorHelper,
+    ThreatlensConnectorHelper,
     StixCoreRelationship,
     get_config_variable,
 )
@@ -24,7 +24,7 @@ class AbuseSSLImportConnector:
             if os.path.isfile(config_file_path)
             else {}
         )
-        self.helper = OpenCTIConnectorHelper(config)
+        self.helper = ThreatlensConnectorHelper(config)
         name = get_config_variable(
             "CONNECTOR_NAME", ["connector", "name"], config
         ).capitalize()
@@ -133,9 +133,9 @@ class AbuseSSLImportConnector:
                 value=ip,
                 object_marking_refs=[stix2.TLP_WHITE],
                 custom_properties={
-                    "x_opencti_description": "Malicious SSL connections",
-                    "x_opencti_created_by_ref": f"{self.author.id}",
-                    "x_opencti_labels": ["osint", "ssl-blacklist"],
+                    "x_Threatlens_description": "Malicious SSL connections",
+                    "x_Threatlens_created_by_ref": f"{self.author.id}",
+                    "x_Threatlens_labels": ["osint", "ssl-blacklist"],
                 },
             )
             observables.append(observable)
@@ -163,7 +163,7 @@ class AbuseSSLImportConnector:
                 labels=["osint", "ssl-blacklist"],
                 object_marking_refs=[stix2.TLP_WHITE],
                 custom_properties={
-                    "x_opencti_main_observable_type": "IPv4-Addr",
+                    "x_Threatlens_main_observable_type": "IPv4-Addr",
                 },
             )
             indicators.append(indicator)
@@ -213,7 +213,7 @@ class AbuseSSLImportConnector:
 
     def send_bundle(self, bundle, work_id):
         """
-        Attempts to send serialized STIX Bundle to OpenCTI client
+        Attempts to send serialized STIX Bundle to Threatlens client
 
         :param bundle: Serialized STIX Bundle
         :param work_id: a valid work id
