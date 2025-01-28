@@ -1,10 +1,10 @@
 version: '3'
 services:
   connector-export-file-stix:
-    image: opencti/connector-export-file-stix:6.4.9
+    image: THREATLENS/connector-export-file-stix:6.4.8
     environment:
-      - OPENCTI_URL=http://localhost
-      - OPENCTI_TOKEN=ChangeMe
+      - THREATLENS_URL=http://localhost
+      - THREATLENS_TOKEN=ChangeMe
       - CONNECTOR_ID=ChangeMe
       - CONNECTOR_NAME=ExportFileStix2
       - CONNECTOR_SCOPE=application/vnd.oasis.stix+json
