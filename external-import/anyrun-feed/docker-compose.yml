@@ -1,10 +1,10 @@
 version: '3'
 services:
   connector-anyrun-feed:
-    image: opencti/connector-anyrun-feed:6.4.9
+    image: THREATLENS/connector-anyrun-feed:6.4.8
     environment:
-      - OPENCTI_URL=http://opencti:8080
-      - OPENCTI_TOKEN=CHANGME
+      - THREATLENS_URL=http://THREATLENS:8080
+      - THREATLENS_TOKEN=CHANGME
       - CONNECTOR_ID=CHANGEME
       - CONNECTOR_NAME=ANY.RUN feed
       - CONNECTOR_SCOPE=stix2
