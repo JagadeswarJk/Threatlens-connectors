@@ -19,7 +19,7 @@ from pycti import (
     Malware,
     MarkingDefinition,
     Note,
-    OpenCTIConnectorHelper,
+    ThreatlensConnectorHelper,
     Report,
     StixCoreRelationship,
     StixSightingRelationship,
@@ -28,7 +28,7 @@ from pycti import (
 )
 
 PATTERNTYPES = ["yara", "sigma", "pcre", "snort", "suricata"]
-OPENCTISTIX2 = {
+ThreatlensSTIX2 = {
     "autonomous-system": {
         "type": "autonomous-system",
         "path": ["number"],
@@ -81,7 +81,7 @@ class MispImportFile:
             if os.path.isfile(config_file_path)
             else {}
         )
-        self.helper = OpenCTIConnectorHelper(config)
+        self.helper = ThreatlensConnectorHelper(config)
         # Extra config
         self.misp_import_file_import_from_date = get_config_variable(
             "MISP_IMPORT_FILE_IMPORT_FROM_DATE",
@@ -222,8 +222,8 @@ class MispImportFile:
                         definition_type="statement",
                         definition={"statement": "custom"},
                         allow_custom=True,
-                        x_opencti_definition_type=marking_type,
-                        x_opencti_definition=marking_name,
+                        x_Threatlens_definition_type=marking_type,
+                        x_Threatlens_definition=marking_name,
                     )
                     markings.append(marking)
             if tag_name_lower == "tlp:clear":
@@ -240,8 +240,8 @@ class MispImportFile:
                     definition_type="statement",
                     definition={"statement": "custom"},
                     allow_custom=True,
-                    x_opencti_definition_type="TLP",
-                    x_opencti_definition="TLP:AMBER+STRICT",
+                    x_Threatlens_definition_type="TLP",
+                    x_Threatlens_definition="TLP:AMBER+STRICT",
                 )
                 markings.append(marking)
             if tag_name_lower == "tlp:red":
@@ -297,7 +297,7 @@ class MispImportFile:
                                 description=galaxy_entity["description"],
                                 created_by_ref=author["id"],
                                 object_marking_refs=markings,
-                                custom_properties={"x_opencti_aliases": aliases},
+                                custom_properties={"x_Threatlens_aliases": aliases},
                             )
                         )
                         added_names.append(name)
@@ -321,7 +321,7 @@ class MispImportFile:
                                 description=galaxy_entity["description"],
                                 created_by_ref=author["id"],
                                 object_marking_refs=markings,
-                                custom_properties={"x_opencti_aliases": aliases},
+                                custom_properties={"x_Threatlens_aliases": aliases},
                                 allow_custom=True,
                             )
                         )
@@ -386,7 +386,7 @@ class MispImportFile:
                                 object_marking_refs=markings,
                                 custom_properties={
                                     "x_mitre_id": x_mitre_id,
-                                    "x_opencti_aliases": aliases,
+                                    "x_Threatlens_aliases": aliases,
                                 },
                                 allow_custom=True,
                             )
@@ -449,7 +449,7 @@ class MispImportFile:
                                     "name",
                                     "x_mitre_id",
                                     "aliases",
-                                    "x_opencti_aliases",
+                                    "x_Threatlens_aliases",
                                 ],
                                 "values": [tag_value],
                             }
@@ -673,10 +673,10 @@ class MispImportFile:
         return elements
 
     def _resolve_tags(self, tags):
-        opencti_tags = []
+        Threatlens_tags = []
 
         if not self.misp_import_file_create_tags_as_labels:
-            return opencti_tags
+            return Threatlens_tags
 
         for tag in tags:
             if (
@@ -738,8 +738,8 @@ class MispImportFile:
                 if '="' in tag_value:
                     if len(tag_value) > 0:
                         tag_value = tag_value.replace('="', "-")[:-1]
-                opencti_tags.append(tag_value)
-        return opencti_tags
+                Threatlens_tags.append(tag_value)
+        return Threatlens_tags
 
     def _resolve_type(self, type, value):
         types = {
@@ -984,22 +984,22 @@ class MispImportFile:
                     else observable_type
                 )
             # observable type is not in stix 2
-            elif observable_resolver not in OPENCTISTIX2:
+            elif observable_resolver not in ThreatlensSTIX2:
                 return None
             # observable type is in stix
-            elif "path" in OPENCTISTIX2[observable_resolver]:
-                if "transform" in OPENCTISTIX2[observable_resolver]:
+            elif "path" in ThreatlensSTIX2[observable_resolver]:
+                if "transform" in ThreatlensSTIX2[observable_resolver]:
                     if (
-                        OPENCTISTIX2[observable_resolver]["transform"]["operation"]
+                        ThreatlensSTIX2[observable_resolver]["transform"]["operation"]
                         == "remove_string"
                     ):
                         observable_value = observable_value.replace(
-                            OPENCTISTIX2[observable_resolver]["transform"]["value"],
+                            ThreatlensSTIX2[observable_resolver]["transform"]["value"],
                             "",
                         )
                 lhs = stix2.ObjectPath(
-                    OPENCTISTIX2[observable_resolver]["type"],
-                    OPENCTISTIX2[observable_resolver]["path"],
+                    ThreatlensSTIX2[observable_resolver]["type"],
+                    ThreatlensSTIX2[observable_resolver]["path"],
                 )
                 genuine_pattern = str(
                     stix2.ObservationExpression(
@@ -1037,9 +1037,9 @@ class MispImportFile:
                             int(attribute["timestamp"])
                         ).strftime("%Y-%m-%dT%H:%M:%SZ"),
                         custom_properties={
-                            "x_opencti_main_observable_type": observable_type,
-                            "x_opencti_detection": to_ids,
-                            "x_opencti_score": score,
+                            "x_Threatlens_main_observable_type": observable_type,
+                            "x_Threatlens_detection": to_ids,
+                            "x_Threatlens_score": score,
                         },
                     )
                 except Exception as e:
@@ -1048,8 +1048,8 @@ class MispImportFile:
             if self.misp_import_file_create_observables and observable_type is not None:
                 try:
                     custom_properties = {
-                        "x_opencti_description": attribute["comment"],
-                        "x_opencti_score": score,
+                        "x_Threatlens_description": attribute["comment"],
+                        "x_Threatlens_score": score,
                         "labels": attribute_tags,
                         "created_by_ref": author["id"],
                         "external_references": attribute_external_references,
@@ -1117,10 +1117,10 @@ class MispImportFile:
                             custom_properties=custom_properties,
                         )
                     elif observable_type == "User-Account":
-                        if "account_type" in OPENCTISTIX2[observable_resolver]:
+                        if "account_type" in ThreatlensSTIX2[observable_resolver]:
                             observable = stix2.UserAccount(
                                 account_login=observable_value,
-                                account_type=OPENCTISTIX2[observable_resolver][
+                                account_type=ThreatlensSTIX2[observable_resolver][
                                     "account_type"
                                 ],
                                 object_marking_refs=attribute_markings,
@@ -1133,15 +1133,15 @@ class MispImportFile:
                                 custom_properties=custom_properties,
                             )
                     elif observable_type == "File":
-                        if OPENCTISTIX2[observable_resolver]["path"][0] == "name":
+                        if ThreatlensSTIX2[observable_resolver]["path"][0] == "name":
                             observable = stix2.File(
                                 name=observable_value,
                                 object_marking_refs=attribute_markings,
                                 custom_properties=custom_properties,
                             )
-                        elif OPENCTISTIX2[observable_resolver]["path"][0] == "hashes":
+                        elif ThreatlensSTIX2[observable_resolver]["path"][0] == "hashes":
                             hashes = {}
-                            hashes[OPENCTISTIX2[observable_resolver]["path"][1]] = (
+                            hashes[ThreatlensSTIX2[observable_resolver]["path"][1]] = (
                                 observable_value
                             )
                             observable = stix2.File(
@@ -1169,14 +1169,14 @@ class MispImportFile:
                             custom_properties=custom_properties,
                         )
                     elif observable_type == "X509-Certificate":
-                        if OPENCTISTIX2[observable_resolver]["path"][0] == "issuer":
+                        if ThreatlensSTIX2[observable_resolver]["path"][0] == "issuer":
                             observable = stix2.File(
                                 issuer=observable_value,
                                 object_marking_refs=attribute_markings,
                                 custom_properties=custom_properties,
                             )
                         elif (
-                            OPENCTISTIX2[observable_resolver]["path"][1]
+                            ThreatlensSTIX2[observable_resolver]["path"][1]
                             == "serial_number"
                         ):
                             observable = stix2.File(
@@ -1200,10 +1200,10 @@ class MispImportFile:
                         observable = stix2.Identity(
                             id=Identity.generate_id(
                                 observable_value,
-                                OPENCTISTIX2[observable_resolver]["identity_class"],
+                                ThreatlensSTIX2[observable_resolver]["identity_class"],
                             ),
                             name=observable_value,
-                            identity_class=OPENCTISTIX2[observable_resolver][
+                            identity_class=ThreatlensSTIX2[observable_resolver][
                                 "identity_class"
                             ],
                             description=attribute["comment"],
@@ -1258,7 +1258,7 @@ class MispImportFile:
                         sightings.append(sighting)
                     # if observable is not None:
                     #     sighting = Sighting(
-                    #         id=OpenCTIStix2Utils.generate_random_stix_id("sighting"),
+                    #         id=ThreatlensStix2Utils.generate_random_stix_id("sighting"),
                     #         sighting_of_ref=observable["id"],
                     #         first_seen=datetime.utcfromtimestamp(
                     #             int(misp_sighting["date_sighting"])
@@ -1429,7 +1429,7 @@ class MispImportFile:
                     relationships.append(relationship_uses)
                     # if indicator is not None:
                     #     relationship_indicates = Relationship(
-                    #         id=OpenCTIStix2Utils.generate_random_stix_id(
+                    #         id=ThreatlensStix2Utils.generate_random_stix_id(
                     #             "relationship"
                     #         ),
                     #         relationship_type="indicates",
@@ -1443,7 +1443,7 @@ class MispImportFile:
                     #     relationships.append(relationship_indicates)
                     # if observable is not None:
                     #     relationship_indicates = Relationship(
-                    #         id=OpenCTIStix2Utils.generate_random_stix_id(
+                    #         id=ThreatlensStix2Utils.generate_random_stix_id(
                     #             "relationship"
                     #         ),
                     #         relationship_type="related-to",
@@ -1485,7 +1485,7 @@ class MispImportFile:
                     relationships.append(relationship_uses)
                     # if indicator is not None:
                     #    relationship_indicates = Relationship(
-                    #        id=OpenCTIStix2Utils.generate_random_stix_id(
+                    #        id=ThreatlensStix2Utils.generate_random_stix_id(
                     #            "relationship"
                     #        ),
                     #        relationship_type="indicates",
@@ -1499,7 +1499,7 @@ class MispImportFile:
                     #    relationships.append(relationship_indicates)
                     # if observable is not None:
                     #    relationship_indicates = Relationship(
-                    #        id=OpenCTIStix2Utils.generate_random_stix_id(
+                    #        id=ThreatlensStix2Utils.generate_random_stix_id(
                     #            "relationship"
                     #        ),
                     #        relationship_type="indicates",
@@ -1600,7 +1600,7 @@ class MispImportFile:
             }
         return None
 
-    # Markdown object, attribute & tag links should be converted from MISP links to OpenCTI links
+    # Markdown object, attribute & tag links should be converted from MISP links to Threatlens links
     def _process_note(self, content, bundle_objects):
         def reformat(match):
             type = match.group(1)
@@ -1759,7 +1759,7 @@ class MispImportFile:
                             object_marking_refs=event_markings,
                             custom_properties={
                                 "description": object["description"],
-                                "x_opencti_score": self._threat_level_to_score(
+                                "x_Threatlens_score": self._threat_level_to_score(
                                     event_threat_level
                                 ),
                                 "labels": event_tags,
@@ -1783,7 +1783,7 @@ class MispImportFile:
                         object_marking_refs=event_markings,
                         custom_properties={
                             "description": object["description"],
-                            "x_opencti_score": self._threat_level_to_score(
+                            "x_Threatlens_score": self._threat_level_to_score(
                                 event_threat_level
                             ),
                             "labels": event_tags,
@@ -1812,7 +1812,7 @@ class MispImportFile:
                         indicator["indicator"] is not None
                         and object["meta-category"] == "file"
                         and indicator["indicator"].get(
-                            "x_opencti_main_observable_type", "Unknown"
+                            "x_Threatlens_main_observable_type", "Unknown"
                         )
                         in FILETYPES
                     ):
@@ -2002,7 +2002,7 @@ class MispImportFile:
                 external_references=event_external_references,
                 confidence=self.helper.connect_confidence_level,
                 custom_properties={
-                    "x_opencti_files": added_files,
+                    "x_Threatlens_files": added_files,
                 },
                 allow_custom=True,
             )
@@ -2035,9 +2035,9 @@ class MispImportFile:
     def _process_message(self, data):
         file_fetch = data["file_fetch"]
         bypass_validation = data["bypass_validation"]
-        file_uri = self.helper.opencti_url + file_fetch
+        file_uri = self.helper.Threatlens_url + file_fetch
         self.helper.log_info(f"Importing the file {file_uri}")
-        file_content = self.helper.api.fetch_opencti_file(file_uri)
+        file_content = self.helper.api.fetch_Threatlens_file(file_uri)
         events = json.loads(file_content)
         if not isinstance(events, list):
             if "response" in events:
@@ -2074,11 +2074,11 @@ class MispImportFile:
             element_type == "report"
             or element_type == "grouping"
             or element_type == "observed-data"
-            or element_type == "x-opencti-case-incident"
-            or element_type == "x-opencti-case-rfi"
-            or element_type == "x-opencti-case-rft"
-            or element_type == "x-opencti-task"
-            or element_type == "x-opencti-feedback"
+            or element_type == "x-Threatlens-case-incident"
+            or element_type == "x-Threatlens-case-rfi"
+            or element_type == "x-Threatlens-case-rft"
+            or element_type == "x-Threatlens-task"
+            or element_type == "x-Threatlens-feedback"
         )
 
     def _contains_container(self, bundle) -> bool:
@@ -2098,8 +2098,8 @@ class MispImportFile:
             container_stix = [
                 object
                 for object in container_stix_bundle["objects"]
-                if "x_opencti_id" in object
-                and object["x_opencti_id"] == container["id"]
+                if "x_Threatlens_id" in object
+                and object["x_Threatlens_id"] == container["id"]
             ][0]
             if self._is_container(container_stix.get("type")):
                 if self._contains_container(bundle):
