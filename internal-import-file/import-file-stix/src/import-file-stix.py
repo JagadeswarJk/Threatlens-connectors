@@ -5,7 +5,7 @@ import time
 from typing import Dict, List
 
 import yaml
-from pycti import OpenCTIConnectorHelper
+from pycti import ThreatlensConnectorHelper
 from stix2elevator import elevate
 from stix2elevator.options import initialize_options
 
@@ -19,15 +19,15 @@ class ImportFileStix:
             if os.path.isfile(config_file_path)
             else {}
         )
-        self.helper = OpenCTIConnectorHelper(config)
+        self.helper = ThreatlensConnectorHelper(config)
 
     def _process_message(self, data: Dict) -> str:
         file_fetch = data["file_fetch"]
         bypass_validation = data["bypass_validation"]
-        file_uri = self.helper.opencti_url + file_fetch
+        file_uri = self.helper.Threatlens_url + file_fetch
         self.helper.log_info(f"Importing the file {file_uri}")
 
-        file_content = self.helper.api.fetch_opencti_file(file_uri)
+        file_content = self.helper.api.fetch_Threatlens_file(file_uri)
         if data["file_mime"] == "text/xml":
             self.helper.log_debug("STIX 1.2 file. Attempting conversion")
             initialize_options()
@@ -59,11 +59,11 @@ class ImportFileStix:
             element_type == "report"
             or element_type == "grouping"
             or element_type == "observed-data"
-            or element_type == "x-opencti-case-incident"
-            or element_type == "x-opencti-case-rfi"
-            or element_type == "x-opencti-case-rft"
-            or element_type == "x-opencti-task"
-            or element_type == "x-opencti-feedback"
+            or element_type == "x-Threatlens-case-incident"
+            or element_type == "x-Threatlens-case-rfi"
+            or element_type == "x-Threatlens-case-rft"
+            or element_type == "x-Threatlens-task"
+            or element_type == "x-Threatlens-feedback"
         )
 
     def _contains_container(self, bundle: List) -> bool:
@@ -83,8 +83,8 @@ class ImportFileStix:
             container_stix = [
                 object
                 for object in container_stix_bundle["objects"]
-                if "x_opencti_id" in object
-                and object["x_opencti_id"] == container["id"]
+                if "x_Threatlens_id" in object
+                and object["x_Threatlens_id"] == container["id"]
             ][0]
             if self._is_container(container_stix.get("type")):
                 if self._contains_container(bundle):
