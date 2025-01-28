@@ -4,7 +4,7 @@ import sys
 import time
 
 import yaml
-from pycti import OpenCTIConnectorHelper
+from pycti import ThreatlensConnectorHelper
 
 
 class ExportFileTxt:
@@ -16,7 +16,7 @@ class ExportFileTxt:
             if os.path.isfile(config_file_path)
             else {}
         )
-        self.helper = OpenCTIConnectorHelper(config)
+        self.helper = threatlensConnectorHelper(config)
 
     def _process_message(self, data):
         file_name = data["file_name"]
