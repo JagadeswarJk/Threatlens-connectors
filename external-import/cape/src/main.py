@@ -5,8 +5,8 @@ from datetime import datetime
 
 import yaml
 from cape.cape import cuckoo, cuckooReport
-from cape.telemetry import openCTIInterface
-from pycti import OpenCTIConnectorHelper, get_config_variable
+from cape.telemetry import ThreatlensInterface
+from pycti import ThreatlensConnectorHelper, get_config_variable
 
 
 class capeConnector:
@@ -22,7 +22,7 @@ class capeConnector:
             if os.path.isfile(config_file_path)
             else {}
         )
-        self.helper = OpenCTIConnectorHelper(config)
+        self.helper = ThreatlensConnectorHelper(config)
 
         self.identity = self.helper.api.identity.create(
             type="Organization",
@@ -160,7 +160,7 @@ class capeConnector:
 
                         self.helper.log_info(f"Processing Task {taskSummary.info.id}")
                         # Process and submit cape task as stix bundle
-                        openCTIInterface(
+                        ThreatlensInterface(
                             taskSummary,
                             self.identity,
                             self.helper,
